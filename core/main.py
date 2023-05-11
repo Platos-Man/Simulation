@@ -1,4 +1,5 @@
 import pygame
+
 pygame.init()
 
 display_width = 800
@@ -9,9 +10,9 @@ window_clock = pygame.time.Clock()
 
 class MainRun():
     def __init__(self):
-        self.Main()
+        self.main()
 
-    def Main(self):
+    def main(self):
         
         while True:
             window.fill((0,0,0))
@@ -20,8 +21,11 @@ class MainRun():
                 if event.type == pygame.QUIT:
                     pygame.quit()
 
-        pygame.display.update()
-        window_clock.tick(60)
+            pygame.display.update()
+            window_clock.tick(60)
+
+    def grid(self):
+        pass
 
 
 if __name__ == "__main__":
