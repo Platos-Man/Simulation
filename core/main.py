@@ -1,5 +1,5 @@
-import random
 import sys
+from random import randint
 
 import pygame
 
@@ -16,11 +16,12 @@ class MainRun:
 
     def main(self):
         window_clock = pygame.time.Clock()
+        entity = Entity(self.dw, self.dh, self.grid_size)
         while True:
             self.window.fill((220, 220, 220))
             self.draw_grid()
-            entity = Entity()
-            entity.draw_entity(self.window, self.grid_size)
+
+            entity.draw_entity(self.window)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -36,13 +37,19 @@ class MainRun:
 
 
 class Entity:
-    def __init__(self):
+    def __init__(self, dw, dh, grid_size):
         self.color = (200, 0, 0)
-        self.xpos = 0
-        self.ypos = 0
+        self.grid_size = grid_size
+        self.xpos = randint(0, (dw - self.grid_size) // self.grid_size)
+        self.ypos = randint(0, (dh - self.grid_size) // self.grid_size)
 
-    def draw_entity(self, window, grid_size):
-        body = pygame.Rect(self.xpos, self.ypos, grid_size, grid_size)
+    def draw_entity(self, window):
+        body = pygame.Rect(
+            self.xpos * self.grid_size,
+            self.ypos * self.grid_size,
+            self.grid_size,
+            self.grid_size,
+        )
         pygame.draw.rect(window, self.color, body)
 
 
