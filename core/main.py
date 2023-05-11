@@ -11,7 +11,7 @@ class MainRun:
         self.dw = dw  # Display width
         self.dh = dh  # Display height
         self.window = pygame.display.set_mode((self.dw, self.dh))
-        self.grid_size = 100
+        self.grid_size = 50
         self.main()
 
     def main(self):
@@ -46,6 +46,8 @@ class Entity:
         self.screen_yend = (dh - self.grid_size) // self.grid_size
         self.xpos = randint(0, self.screen_xend)
         self.ypos = randint(0, self.screen_yend)
+        # self.direction = choice([0, 1, 2, 3])  # 0: north, 1: west, 2: south, 3: east
+        self.direction = randint(0, 4)
 
     def draw_entity(self, window):
         body = pygame.Rect(
@@ -55,21 +57,36 @@ class Entity:
             self.grid_size,
         )
         pygame.draw.rect(window, self.color, body)
+        centerx = self.xpos * self.grid_size + self.grid_size / 2
+        centery = self.ypos * self.grid_size + self.grid_size / 2
+        pygame.draw.circle(window, (0, 0, 0), (centerx, centery), self.grid_size // 5)
 
     def move_entity(self):
-        state = choice([0, 1])
+        state = choice([0, 1, 1, 1])
         if state:
-            self.xpos += choice([-1, 0, 1])
-            if self.xpos < 0:
-                self.xpos = self.screen_xend
-            if self.xpos > self.screen_xend:
-                self.xpos = 0
+            if self.direction == 0:
+                self.ypos += -1
+            elif self.direction == 1:
+                self.xpos += 1
+            elif self.direction == 2:
+                self.ypos += 1
+            elif self.direction == 3:
+                self.xpos += -1
         else:
-            self.ypos += choice([-1, 0, 1])
-            if self.ypos < 0:
-                self.ypos = self.screen_yend
-            if self.ypos > self.screen_yend:
-                self.ypos = 0
+            self.direction += choice([-1, 1])
+            if self.direction < 0:
+                self.direction = 3
+            if self.direction > 3:
+                self.direction = 0
+
+        if self.xpos < 0:
+            self.xpos = self.screen_xend
+        if self.xpos > self.screen_xend:
+            self.xpos = 0
+        if self.ypos < 0:
+            self.ypos = self.screen_yend
+        if self.ypos > self.screen_yend:
+            self.ypos = 0
 
 
 if __name__ == "__main__":
