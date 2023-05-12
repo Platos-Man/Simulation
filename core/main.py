@@ -16,16 +16,15 @@ class MainRun:
 
     def main(self):
         window_clock = pygame.time.Clock()
-        entity = Entity(self.dw, self.dh, self.grid_size, (200, 0, 0))
-        entity2 = Entity(self.dw, self.dh, self.grid_size, (0, 200, 0))
+        entity_manager = EntityManager(self.dw, self.dh, self.grid_size, self.window)
+        entity_manager.create_entities(5)
+
+        print(entity_manager.entity_list)
         while True:
             self.window.fill((220, 220, 220))
             self.draw_grid()
-
-            entity.draw_entity(self.window)
-            entity2.draw_entity(self.window)
-            entity.move_entity()
-            entity2.move_entity()
+            entity_manager.draw_entities(self.window)
+            entity_manager.move_entities()
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -70,14 +69,16 @@ class Entity:
                 window, (0, 0, 0), (centerx + x2, centery + y2), self.grid_size // 10
             )
 
+        apart = self.grid_size // 5  # how far eyes are apart from eachother
+        offcenter = self.grid_size // 3  # how far from center eyes are
         if self.direction == 0:
-            draw_eyes(-10, 10, -16, -16)
+            draw_eyes(-apart, apart, -offcenter, -offcenter)
         elif self.direction == 1:
-            draw_eyes(16, 16, -10, 10)
+            draw_eyes(offcenter, offcenter, -apart, apart)
         elif self.direction == 2:
-            draw_eyes(-10, 10, 16, 16)
+            draw_eyes(-apart, apart, offcenter, offcenter)
         elif self.direction == 3:
-            draw_eyes(-16, -16, -10, 10)
+            draw_eyes(-offcenter, -offcenter, -apart, apart)
 
     def move_entity(self):
         state = choice([0, 1, 1, 1])
@@ -105,6 +106,34 @@ class Entity:
             self.ypos = self.screen_yend
         elif self.ypos > self.screen_yend:
             self.ypos = 0
+
+
+class EntityManager:
+    def __init__(self, dw, dh, grid_size, window):
+        self.dw = dw
+        self.dh = dh
+        self.grid_size = grid_size
+        self.window = window
+        self.entity_list = []
+
+    def create_entities(self, amount):
+        self.entity_list = [
+            Entity(
+                self.dw,
+                self.dh,
+                self.grid_size,
+                (randint(50, 220), randint(50, 220), randint(50, 220)),
+            )
+            for _ in range(amount)
+        ]
+
+    def draw_entities(self, window):
+        for entity in self.entity_list:
+            entity.draw_entity(window)
+
+    def move_entities(self):
+        for entity in self.entity_list:
+            entity.move_entity()
 
 
 if __name__ == "__main__":
