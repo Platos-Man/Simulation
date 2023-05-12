@@ -18,8 +18,6 @@ class MainRun:
         window_clock = pygame.time.Clock()
         entity_manager = EntityManager(self.dw, self.dh, self.grid_size, self.window)
         entity_manager.create_entities(5)
-
-        print(entity_manager.entity_list)
         while True:
             self.window.fill((220, 220, 220))
             self.draw_grid()
