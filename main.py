@@ -62,6 +62,7 @@ class Snake:
             head_relation.y += -cells_in_col
         elif head_relation.y == -cells_in_col + 1:
             head_relation.y += cells_in_col
+
         if head_relation == Vector2(-1, 0):  # left
             self.head = self.head_left
         elif head_relation == Vector2(1, 0):  # right
@@ -94,6 +95,24 @@ class Snake:
     def update_body_graphics(self, i):
         following = self.body[i + 1] - self.body[i]
         previous = self.body[i - 1] - self.body[i]
+
+        def adjust_coordinate(coord):
+            if coord == cells_in_row - 1:
+                return -cells_in_row
+            elif coord == -cells_in_row + 1:
+                return cells_in_row
+            elif coord == cells_in_col - 1:
+                return -cells_in_col
+            elif coord == -cells_in_col + 1:
+                return cells_in_col
+            else:
+                return 0
+
+        following.x += adjust_coordinate(following.x)
+        following.y += adjust_coordinate(following.y)
+        previous.x += adjust_coordinate(previous.x)
+        previous.y += adjust_coordinate(previous.y)
+
         if following.y == previous.y:
             self.body_block = self.body_horizontal
         elif following.x == previous.x:
