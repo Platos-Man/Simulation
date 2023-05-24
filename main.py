@@ -54,6 +54,14 @@ class Snake:
 
     def update_head_graphics(self):
         head_relation = self.body[0] - self.body[1]
+        if head_relation.x == cells_in_row - 1:
+            head_relation.x += -cells_in_row
+        elif head_relation.x == -cells_in_row + 1:
+            head_relation.x += cells_in_row
+        elif head_relation.y == cells_in_col - 1:
+            head_relation.y += -cells_in_col
+        elif head_relation.y == -cells_in_col + 1:
+            head_relation.y += cells_in_col
         if head_relation == Vector2(-1, 0):  # left
             self.head = self.head_left
         elif head_relation == Vector2(1, 0):  # right
@@ -65,6 +73,15 @@ class Snake:
 
     def update_tail_graphics(self):
         tail_relation = self.body[-2] - self.body[-1]
+        if tail_relation.x == cells_in_row - 1:
+            tail_relation.x += -cells_in_row
+        elif tail_relation.x == -cells_in_row + 1:
+            tail_relation.x += cells_in_row
+        elif tail_relation.y == cells_in_col - 1:
+            tail_relation.y += -cells_in_col
+        elif tail_relation.y == -cells_in_col + 1:
+            tail_relation.y += cells_in_col
+
         if tail_relation == Vector2(-1, 0):  # left
             self.tail = self.tail_left
         elif tail_relation == Vector2(1, 0):  # right
